@@ -32,12 +32,13 @@ fn to_roman(p: usize) -> String {
         .map(|&(symbol, value)| (symbol.to_string(), value))
         .fold(
             (String::from(""), 0),
-            |(mut symbols, mut total), (symbol, val)| {
+            |(mut numeral, mut total), (symbol, val)| {
                 let remainder = p - total;
                 let multiplier = (remainder - (remainder % val)) / val;
                 total += multiplier * val;
-                symbols.push_str(symbol.repeat(multiplier).as_ref());
-                (symbols, total)
+                numeral.push_str(&symbol.repeat(multiplier));
+
+                (numeral, total)
             },
         );
 
