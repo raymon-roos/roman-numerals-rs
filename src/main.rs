@@ -34,7 +34,7 @@ fn to_roman(p: usize) -> String {
             (String::from(""), 0),
             |(mut numeral, mut total), (symbol, val)| {
                 let remainder = p - total;
-                let multiplier = (remainder - (remainder % val)) / val;
+                let multiplier = remainder / val;
                 total += multiplier * val;
                 numeral.push_str(&symbol.repeat(multiplier));
 
