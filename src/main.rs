@@ -1,4 +1,3 @@
-use core::panic;
 use std::env;
 
 const NUMERALS: [(&str, usize); 13] = [
@@ -25,7 +24,7 @@ fn main() {
 
     println!("{}", to_roman(i));
 
-    from_roman("MCMXVIII");
+    from_roman("MCMXVIII").ok();
 }
 
 fn to_roman(p: usize) -> String {
@@ -48,7 +47,10 @@ fn to_roman(p: usize) -> String {
     numeral.0
 }
 
-fn from_roman(input_str: &str) -> usize {
+#[derive(Debug)]
+struct ParseNumeralError {}
+
+fn from_roman(input_str: &str) -> Result<usize, ParseNumeralError> {
     let input_symbols = input_str.chars().collect::<Vec<char>>();
     let input_roman_digits = input_symbols.chunk_by(|a, b| {
         matches!(
@@ -57,22 +59,24 @@ fn from_roman(input_str: &str) -> usize {
         )
     });
 
-    let mut num = 0;
+    let mut sum = 0;
     for input_roman_digit in input_roman_digits {
-        dbg!(&input_roman_digit);
-        if let Some((_symbol, value)) = NUMERALS.iter().find(|&(symbol, _val)| {
+        let matching_roman_digit = NUMERALS.iter().find(|&(symbol, _val)| {
             match (input_roman_digit.first(), input_roman_digit.get(1)) {
                 (Some(a), Some(b)) => *symbol == format!("{a}{b}"),
                 (None, Some(b)) => *symbol == b.to_string(),
                 (Some(a), None) => *symbol == a.to_string(),
-                _ => panic!("Invalid numeral!"),
+                _ => false,
             }
-        }) {
-            num += value;
+        });
+
+        match matching_roman_digit {
+            Some((_symbol, value)) => sum += value,
+            None => return Err(ParseNumeralError {}),
         }
     }
 
-    num
+    Ok(sum)
 }
 
 #[cfg(test)]
@@ -86,7 +90,7 @@ mod test {
 
     #[test]
     fn three_to_roman() {
-        assert_eq!(from_roman("III"), 3);
+        assert_eq!(from_roman("III").unwrap(), 3);
     }
 
     #[test]
@@ -96,7 +100,7 @@ mod test {
 
     #[test]
     fn two_hundred_seven_to_roman() {
-        assert_eq!(from_roman("CCVII"), 207);
+        assert_eq!(from_roman("CCVII").unwrap(), 207);
     }
 
     #[test]
@@ -106,7 +110,7 @@ mod test {
 
     #[test]
     fn four_hundred_ninety_four_to_roman() {
-        assert_eq!(from_roman("CDXCIV"), 494);
+        assert_eq!(from_roman("CDXCIV").unwrap(), 494);
     }
 
     #[test]
@@ -116,7 +120,7 @@ mod test {
 
     #[test]
     fn seven_hundred_eighty_nine_to_roman() {
-        assert_eq!(from_roman("DCCLXXXIX"), 789);
+        assert_eq!(from_roman("DCCLXXXIX").unwrap(), 789);
     }
 
     #[test]
@@ -126,16 +130,16 @@ mod test {
 
     #[test]
     fn eight_hundred_eight_to_roman() {
-        assert_eq!(from_roman("DCCCLXXXVIII"), 888);
+        assert_eq!(from_roman("DCCCLXXXVIII").unwrap(), 888);
     }
 
     #[test]
     fn nineteen_hundred_eighteen_to_roman() {
-        assert_eq!(from_roman("MCMXVIII"), 1918);
+        assert_eq!(from_roman("MCMXVIII").unwrap(), 1918);
     }
 
     #[test]
     fn nineteen_hundred_eighteen_from_roman() {
-        assert_eq!(from_roman("MCMXVIII"), 1918);
+        assert_eq!(from_roman("MCMXVIII").unwrap(), 1918);
     }
 }
