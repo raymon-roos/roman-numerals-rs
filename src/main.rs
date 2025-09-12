@@ -33,14 +33,12 @@ fn to_roman(p: usize) -> String {
         .skip_while(|&(_symbol, value)| *value > p)
         .map(|&(symbol, value)| (symbol.to_string(), value))
         .fold(
-            (String::from(""), 0),
-            |(mut numeral, mut total), (symbol, val)| {
-                let remainder = p - total;
+            (String::from(""), p),
+            |(mut numeral, remainder), (symbol, val)| {
                 let multiplier = remainder / val;
-                total += multiplier * val;
                 numeral.push_str(&symbol.repeat(multiplier));
 
-                (numeral, total)
+                (numeral, remainder - multiplier * val)
             },
         );
 
