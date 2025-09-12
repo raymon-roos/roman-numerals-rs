@@ -84,58 +84,58 @@ mod test {
     use super::*;
 
     #[test]
-    fn three_from_roman() {
+    fn three_to_roman() {
         assert_eq!("III", to_roman(3));
     }
 
     #[test]
-    fn three_to_roman() {
+    fn three_from_roman() {
         assert_eq!(from_roman("III").unwrap(), 3);
     }
 
     #[test]
-    fn two_hundred_seven_from_roman() {
+    fn two_hundred_seven_to_roman() {
         assert_eq!("CCVII", to_roman(207));
     }
 
     #[test]
-    fn two_hundred_seven_to_roman() {
+    fn two_hundred_seven_from_roman() {
         assert_eq!(from_roman("CCVII").unwrap(), 207);
     }
 
     #[test]
-    fn four_hundred_ninety_four_from_roman() {
+    fn four_hundred_ninety_four_to_roman() {
         assert_eq!("CDXCIV", to_roman(494));
     }
 
     #[test]
-    fn four_hundred_ninety_four_to_roman() {
+    fn four_hundred_ninety_four_from_roman() {
         assert_eq!(from_roman("CDXCIV").unwrap(), 494);
     }
 
     #[test]
-    fn seven_hundred_eighty_nine_from_roman() {
+    fn seven_hundred_eighty_nine_to_roman() {
         assert_eq!("DCCLXXXIX", to_roman(789));
     }
 
     #[test]
-    fn seven_hundred_eighty_nine_to_roman() {
+    fn seven_hundred_eighty_nine_from_roman() {
         assert_eq!(from_roman("DCCLXXXIX").unwrap(), 789);
     }
 
     #[test]
-    fn eight_hundred_eight_from_roman() {
+    fn eight_hundred_eight_to_roman() {
         assert_eq!("DCCCLXXXVIII", to_roman(888));
     }
 
     #[test]
-    fn eight_hundred_eight_to_roman() {
+    fn eight_hundred_eight_from_roman() {
         assert_eq!(from_roman("DCCCLXXXVIII").unwrap(), 888);
     }
 
     #[test]
     fn nineteen_hundred_eighteen_to_roman() {
-        assert_eq!(from_roman("MCMXVIII").unwrap(), 1918);
+        assert_eq!("MCMXVIII", to_roman(1918));
     }
 
     #[test]
